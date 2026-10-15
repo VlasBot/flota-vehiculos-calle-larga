@@ -1,0 +1,159 @@
+.mi-turno {
+  max-width: 96rem;
+}
+
+.mi-turno__saludo {
+  font-size: var(--fs-headline-lg-mobile);
+  line-height: var(--lh-headline-lg-mobile);
+}
+
+.aviso-licencia {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
+  background-color: #fff1cc;
+  color: #5c3f00;
+  font-weight: 600;
+}
+
+.aviso-licencia svg {
+  flex-shrink: 0;
+}
+
+.viaje-en-curso {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  border-left: 0.8rem solid var(--color-accent-positivo);
+}
+
+.viaje-en-curso__etiqueta {
+  font-size: var(--fs-label-bold);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  color: var(--color-accent-positivo);
+}
+
+.viaje-en-curso__destino {
+  color: var(--color-on-primary);
+  font-size: var(--fs-headline-md);
+  line-height: var(--lh-headline-md);
+}
+
+.viaje-en-curso__datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--space-md);
+}
+
+.viaje-en-curso__datos dt {
+  font-size: var(--fs-label-md);
+  opacity: 0.75;
+}
+
+.viaje-en-curso__datos dd {
+  font-weight: 700;
+}
+
+.viaje-en-curso__cargas {
+  font-size: var(--fs-label-md);
+  opacity: 0.9;
+}
+
+.viaje-en-curso__acciones {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 700px) {
+  .viaje-en-curso__acciones {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Botón secundario sobre la tarjeta oscura */
+.viaje-en-curso .boton--secundario {
+  color: var(--color-on-primary);
+  border-color: var(--color-on-primary);
+}
+
+.viaje-en-curso .boton--secundario:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.viaje-en-curso .boton {
+  min-height: 5.6rem;
+}
+
+.sin-viaje {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+  border-left: 0.8rem solid var(--color-secondary-container);
+}
+
+.sin-viaje > svg {
+  color: var(--color-secondary-container);
+}
+
+.sin-viaje > div {
+  flex: 1 1 24rem;
+}
+
+.sin-viaje h2 {
+  font-size: var(--fs-body-lg);
+}
+
+.sin-viaje .boton {
+  min-height: 5.6rem;
+  flex: 1 1 100%;
+}
+
+@media (min-width: 700px) {
+  .sin-viaje .boton {
+    flex: 0 0 auto;
+  }
+}
+
+.mi-turno__columnas {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 900px) {
+  .mi-turno__columnas {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.mi-turno__subtitulo {
+  font-size: var(--fs-body-lg);
+  margin-bottom: var(--space-md);
+}
+
+.mi-turno__lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.mi-turno__lista li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-md);
+  border-bottom: 0.1rem solid var(--color-outline-variant);
+}
+
+.mi-turno__lista li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}

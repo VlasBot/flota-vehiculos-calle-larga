@@ -1,0 +1,48 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 700;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  height: var(--header-height);
+  padding: 0 var(--space-lg);
+  background-color: var(--color-surface-container-lowest);
+  border-bottom: 0.1rem solid var(--color-outline-variant);
+}
+
+.header__menu {
+  display: none;
+  color: var(--color-primary-container);
+}
+
+.header__titulo {
+  font-weight: 700;
+  font-size: var(--fs-body-lg);
+  color: var(--color-primary-container);
+}
+
+/* Franja con los cuatro colores municipales */
+.header__franja {
+  margin-left: auto;
+  width: 9.6rem;
+  height: 0.6rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-container) 0 25%,
+    var(--color-secondary-container) 25% 50%,
+    var(--color-accent-positivo) 50% 75%,
+    var(--color-accent-secundario) 75% 100%
+  );
+}
+
+@media (max-width: 1024px) {
+  .header {
+    padding: 0 var(--space-md);
+  }
+
+  .header__menu {
+    display: block;
+  }
+}

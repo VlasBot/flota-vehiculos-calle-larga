@@ -1,0 +1,49 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 0.2rem var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 2rem;
+  white-space: nowrap;
+}
+
+.chip::before {
+  content: '';
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: var(--radius-full);
+  background-color: currentColor;
+}
+
+.chip--exito {
+  background-color: #e6f3cc;
+  color: #3f5e00;
+}
+
+.chip--alerta {
+  background-color: #fff1cc;
+  color: #7a5300;
+}
+
+.chip--peligro {
+  background-color: var(--color-error-container);
+  color: var(--color-on-error-container);
+}
+
+.chip--info {
+  background-color: #dcf1f0;
+  color: #1f5e5b;
+}
+
+.chip--marca {
+  background-color: var(--color-secondary-fixed);
+  color: var(--color-on-secondary-fixed-variant);
+}
+
+.chip--neutro {
+  background-color: var(--color-surface-container-high);
+  color: var(--color-on-surface-variant);
+}

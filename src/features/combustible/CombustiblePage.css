@@ -1,0 +1,26 @@
+.resumen-combustible {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: var(--space-md);
+}
+
+.resumen-combustible li {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface-container-lowest);
+  border: 0.1rem solid var(--color-outline-variant);
+  border-left: 0.6rem solid var(--color-accent-positivo);
+}
+
+.resumen-combustible span {
+  font-size: var(--fs-label-md);
+  color: var(--color-on-surface-variant);
+}
+
+.resumen-combustible strong {
+  font-size: var(--fs-headline-md);
+  line-height: var(--lh-headline-md);
+  color: var(--color-primary-container);
+}

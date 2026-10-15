@@ -1,0 +1,104 @@
+.semana-navegacion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.semana-navegacion__rango {
+  font-weight: 700;
+  color: var(--color-primary-container);
+  min-width: 0;
+}
+
+.semana {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 700px) {
+  .semana {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .semana {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: var(--space-sm);
+  }
+}
+
+.semana__dia {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-height: 12rem;
+  padding: var(--space-sm);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-container-low);
+  border-top: 0.4rem solid var(--color-outline-variant);
+}
+
+.semana__dia--hoy {
+  border-top-color: var(--color-secondary-container);
+  background-color: var(--color-secondary-fixed);
+}
+
+.semana__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.semana__titulo {
+  font-size: var(--fs-label-bold);
+  text-transform: capitalize;
+}
+
+.semana__vacio {
+  font-size: var(--fs-label-md);
+  color: var(--color-outline);
+}
+
+.semana__turnos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.turno {
+  position: relative;
+  padding: var(--space-sm);
+  padding-right: 4rem;
+  border-radius: var(--radius-default);
+  background-color: var(--color-surface-container-lowest);
+  border-left: 0.4rem solid var(--color-accent-secundario);
+  box-shadow: var(--shadow-ambient);
+}
+
+.turno__hora {
+  font-size: var(--fs-label-md);
+  font-weight: 700;
+  color: var(--color-primary-container);
+}
+
+.turno__conductor {
+  font-size: var(--fs-label-md);
+  overflow-wrap: anywhere;
+}
+
+.turno__acciones {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.turno__acciones .boton-icono {
+  width: 3.2rem;
+  height: 3.2rem;
+}

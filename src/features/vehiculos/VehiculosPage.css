@@ -1,0 +1,40 @@
+.vehiculo-patente {
+  display: inline-block;
+  padding: 0 var(--space-xs);
+  border: 0.15rem solid var(--color-primary-container);
+  border-radius: var(--radius-default);
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  letter-spacing: 0.1rem;
+  color: var(--color-primary-container);
+}
+
+.vehiculo-alertas {
+  font-size: var(--fs-label-md);
+  color: #7a5300;
+}
+
+.ficha-vehiculo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.ficha-vehiculo h3 {
+  font-size: var(--fs-body-lg);
+  margin-bottom: var(--space-sm);
+}
+
+.ficha-vehiculo__lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.ficha-vehiculo__lista li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-sm);
+  border-bottom: 0.1rem solid var(--color-outline-variant);
+}
