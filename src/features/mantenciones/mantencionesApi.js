@@ -2,7 +2,7 @@ import { supabase } from '../../lib/supabaseClient'
 import { limpiarBusqueda, rangoDePagina } from '../../utils/consultas'
 
 const COLUMNAS = `
-  id, vehiculo_id, tipo, estado, descripcion, fecha_programada, km_programado,
+  id, vehiculo_id, tipo, estado, descripcion, km_programado,
   fecha_realizada, km_realizado, taller, costo, observaciones,
   vehiculo:vehiculos(patente, marca, modelo, kilometraje_actual)
 `
@@ -11,7 +11,7 @@ export async function listarMantenciones({ busqueda, estado, vehiculoId, pagina,
   let consulta = supabase
     .from('mantenciones')
     .select(COLUMNAS, { count: 'exact' })
-    .order('fecha_programada', { ascending: true, nullsFirst: false })
+    .order('km_programado', { ascending: true })
     .range(...rangoDePagina(pagina, tamano))
 
   const termino = limpiarBusqueda(busqueda)

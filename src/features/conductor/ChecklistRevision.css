@@ -1,0 +1,69 @@
+.checklist__lista {
+  display: flex;
+  flex-direction: column;
+}
+
+.checklist__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm) var(--space-md);
+  padding: var(--space-sm) 0;
+  border-bottom: 0.1rem solid var(--color-outline-variant);
+}
+
+.checklist__item:last-child {
+  border-bottom: none;
+}
+
+.checklist__texto {
+  flex: 1 1 20rem;
+  font-size: var(--fs-body-md);
+}
+
+.checklist__opciones {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.checklist__opcion {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 4.4rem;
+  padding: 0 var(--space-md);
+  border: 0.1rem solid var(--color-outline-variant);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-container-lowest);
+  color: var(--color-on-surface-variant);
+  font-size: var(--fs-label-md);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* El radio queda oculto visualmente, pero sigue siendo accesible por teclado */
+.checklist__opcion input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.checklist__opcion:has(input:focus-visible) {
+  outline: 0.2rem solid var(--color-accent-secundario);
+  outline-offset: 0.2rem;
+}
+
+.checklist__opcion--bien:has(input:checked) {
+  border-color: var(--color-accent-positivo-dim);
+  background-color: var(--color-accent-positivo-dim);
+  color: var(--color-on-primary);
+}
+
+.checklist__opcion--mal:has(input:checked) {
+  border-color: var(--color-error);
+  background-color: var(--color-error);
+  color: var(--color-on-error);
+}

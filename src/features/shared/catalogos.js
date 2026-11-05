@@ -72,11 +72,19 @@ export const ROLES = {
 
 export const CLASES_LICENCIA = ['A1', 'A2', 'A3', 'A4', 'A5', 'B', 'C', 'D', 'E', 'F']
 
+// Se avisa que una mantención está próxima cuando faltan estos km o menos
+export const KM_AVISO_MANTENCION = 1000
+
+// Un viaje programado se puede iniciar desde 1 hora antes hasta 2 horas después de la salida
+export const MINUTOS_ANTICIPACION_VIAJE = 60
+export const MINUTOS_RETRASO_VIAJE = 120
+
 // Revisión previa del vehículo que hace el conductor al iniciar un viaje
 export const ITEMS_CHECKLIST = [
   { clave: 'luces', label: 'Luces y señalizadores funcionando' },
   { clave: 'frenos', label: 'Frenos en buen estado' },
-  { clave: 'neumaticos', label: 'Neumáticos y repuesto en buen estado' },
+  { clave: 'neumaticos', label: 'Neumáticos en buen estado' },
+  { clave: 'neumatico_repuesto', label: 'Neumático de repuesto en buen estado' },
   { clave: 'niveles', label: 'Niveles de aceite y agua correctos' },
   { clave: 'documentos', label: 'Documentos del vehículo a bordo' },
   { clave: 'seguridad', label: 'Botiquín, extintor y triángulos' },
@@ -90,7 +98,6 @@ export const OPCIONES_ESTADO_VIAJE = aOpciones(ESTADOS_VIAJE)
 export const OPCIONES_NIVEL_COMBUSTIBLE = aOpciones(NIVELES_COMBUSTIBLE)
 export const OPCIONES_TIPO_MANTENCION = aOpciones(TIPOS_MANTENCION)
 export const OPCIONES_ESTADO_MANTENCION = aOpciones(ESTADOS_MANTENCION)
-export const OPCIONES_CLASE_LICENCIA = CLASES_LICENCIA.map((clase) => ({ value: clase, label: `Clase ${clase}` }))
 
 export function etiqueta(catalogo, valor) {
   return catalogo[valor]?.label ?? valor ?? '—'

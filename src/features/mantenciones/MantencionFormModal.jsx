@@ -7,7 +7,7 @@ import { IconAlerta } from '../../components/icons'
 import { useFormulario } from '../../hooks/useFormulario'
 import { useToast } from '../../hooks/useToast'
 import { fechaLocalISO } from '../../utils/fechas'
-import { aNumeroONulo, textoONulo } from '../../utils/formato'
+import { aNumeroONulo, formatearKm, textoONulo } from '../../utils/formato'
 import { opcionVehiculo } from '../shared/catalogosApi'
 import { OPCIONES_ESTADO_MANTENCION, OPCIONES_TIPO_MANTENCION } from '../shared/catalogos'
 import { traducirError } from '../shared/errorMessages'
@@ -18,7 +18,6 @@ const aFormulario = (mantencion) => ({
   tipo: mantencion?.tipo ?? 'preventiva',
   estado: mantencion?.estado ?? 'programada',
   descripcion: mantencion?.descripcion ?? '',
-  fecha_programada: mantencion?.fecha_programada ?? '',
   km_programado: mantencion?.km_programado ?? '',
   fecha_realizada: mantencion?.fecha_realizada ?? '',
   km_realizado: mantencion?.km_realizado ?? '',
@@ -35,6 +34,7 @@ export function MantencionFormModal({ mantencion, vehiculos, onCerrar, onGuardad
   const [guardando, setGuardando] = useState(false)
   const esEdicion = Boolean(mantencion)
   const realizada = valores.estado === 'realizada'
+  const kmActual = vehiculos.find((vehiculo) => vehiculo.id === valores.vehiculo_id)?.kilometraje_actual
 
   const alCambiarEstado = (evento) => {
     const estado = evento.target.value
@@ -53,8 +53,8 @@ export function MantencionFormModal({ mantencion, vehiculos, onCerrar, onGuardad
     const nuevosErrores = {}
     if (!valores.vehiculo_id) nuevosErrores.vehiculo_id = 'Selecciona el vehículo.'
     if (!valores.descripcion.trim()) nuevosErrores.descripcion = 'Describe el trabajo a realizar.'
-    if (!valores.fecha_programada && valores.km_programado === '') {
-      nuevosErrores.fecha_programada = 'Indica una fecha o un kilometraje programado.'
+    if (valores.km_programado === '' || Number(valores.km_programado) < 0) {
+      nuevosErrores.km_programado = 'Indica el kilometraje en que corresponde la mantención.'
     }
     if (realizada && !valores.fecha_realizada) {
       nuevosErrores.fecha_realizada = 'Indica la fecha en que se realizó.'
@@ -67,7 +67,6 @@ export function MantencionFormModal({ mantencion, vehiculos, onCerrar, onGuardad
       tipo: valores.tipo,
       estado: valores.estado,
       descripcion: valores.descripcion.trim(),
-      fecha_programada: valores.fecha_programada || null,
       km_programado: aNumeroONulo(valores.km_programado),
       fecha_realizada: realizada ? valores.fecha_realizada : null,
       km_realizado: realizada ? aNumeroONulo(valores.km_realizado) : null,
@@ -136,19 +135,14 @@ export function MantencionFormModal({ mantencion, vehiculos, onCerrar, onGuardad
             />
           </div>
           <InputField
-            label="Fecha programada"
-            type="date"
-            value={valores.fecha_programada}
-            onChange={cambiar('fecha_programada')}
-            error={errores.fecha_programada}
-          />
-          <InputField
-            label="Kilometraje programado"
+            label="Kilometraje programado *"
             type="number"
             inputMode="numeric"
             min="0"
             value={valores.km_programado}
             onChange={cambiar('km_programado')}
+            error={errores.km_programado}
+            ayuda={kmActual !== undefined ? `Kilometraje actual del vehículo: ${formatearKm(kmActual)}` : undefined}
           />
           <SelectField
             label="Estado"

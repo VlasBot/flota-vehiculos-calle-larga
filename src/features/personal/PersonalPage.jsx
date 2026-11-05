@@ -142,7 +142,7 @@ export function PersonalPage({ tipo }) {
                 <td data-label="Teléfono">{persona.telefono ?? '—'}</td>
                 {esConductores ? (
                   <td data-label="Licencia">
-                    {persona.licencia_clase ? `Clase ${persona.licencia_clase}` : '—'}
+                    {persona.licencia_clases?.length ? `Clase ${persona.licencia_clases.join(', ')}` : '—'}
                     <span className="texto-secundario">
                       <VencimientoChip fecha={persona.licencia_vencimiento} />
                     </span>

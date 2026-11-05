@@ -1,0 +1,187 @@
+/* Página del permiso: en pantalla se ve como una hoja; al imprimir solo queda la hoja */
+.permiso-pagina {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  min-height: 100vh;
+  padding: var(--space-md);
+  background-color: var(--color-surface-container);
+}
+
+.permiso-pagina__barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm) var(--space-md);
+  width: 100%;
+  max-width: 80rem;
+}
+
+.permiso-pagina__barra .texto-secundario {
+  flex-basis: 100%;
+}
+
+.permiso-pagina > .alerta-formulario {
+  width: 100%;
+  max-width: 80rem;
+}
+
+.permiso-hoja {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  width: 100%;
+  max-width: 80rem;
+  padding: var(--space-lg) var(--space-md);
+  background-color: #ffffff;
+  color: var(--color-on-surface);
+  border-radius: var(--radius-default);
+  box-shadow: 0 0.2rem 1.2rem rgba(6, 38, 45, 0.15);
+}
+
+@media (min-width: 700px) {
+  .permiso-hoja {
+    padding: var(--space-xl);
+  }
+}
+
+.permiso-hoja__cabecera {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 0.3rem solid var(--color-secondary-container);
+}
+
+.permiso-hoja__logo {
+  width: 6.4rem;
+  height: auto;
+}
+
+.permiso-hoja__institucion {
+  flex: 1;
+  font-size: var(--fs-label-md);
+  color: var(--color-on-surface-variant);
+}
+
+.permiso-hoja__municipio {
+  font-size: var(--fs-body-lg);
+  font-weight: 700;
+  color: var(--color-primary-container);
+}
+
+.permiso-hoja__folio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: var(--fs-label-md);
+  color: var(--color-on-surface-variant);
+}
+
+.permiso-hoja__folio strong {
+  font-size: var(--fs-body-lg);
+  color: var(--color-secondary);
+}
+
+.permiso-hoja__titulo {
+  font-size: var(--fs-headline-md);
+  line-height: var(--lh-headline-md);
+  text-align: center;
+  color: var(--color-primary-container);
+}
+
+.permiso-hoja__texto {
+  text-align: justify;
+}
+
+.permiso-hoja__seccion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  break-inside: avoid;
+}
+
+.permiso-hoja__seccion h2 {
+  padding: var(--space-xs) var(--space-sm);
+  border-left: 0.4rem solid var(--color-accent-secundario);
+  background-color: var(--color-surface-container-low);
+  font-size: var(--fs-label-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  color: var(--color-primary-container);
+}
+
+.permiso-hoja__datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: var(--space-sm) var(--space-md);
+  padding: 0 var(--space-sm);
+}
+
+.permiso-hoja__datos dt {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-on-surface-variant);
+}
+
+.permiso-hoja__datos dd {
+  overflow-wrap: anywhere;
+}
+
+.permiso-hoja__dato-ancho {
+  grid-column: 1 / -1;
+}
+
+.permiso-hoja__pie {
+  padding-top: var(--space-sm);
+  border-top: 0.1rem solid var(--color-outline-variant);
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--color-on-surface-variant);
+}
+
+/* ------------------------------------------------------------------ */
+/* Impresión / Guardar como PDF                                        */
+/* ------------------------------------------------------------------ */
+@page {
+  size: letter;
+  margin: 1.5cm;
+}
+
+@media print {
+  .no-imprimir,
+  .toast-contenedor {
+    display: none !important;
+  }
+
+  body {
+    background-color: #ffffff;
+  }
+
+  .permiso-pagina {
+    min-height: auto;
+    padding: 0;
+    background-color: #ffffff;
+  }
+
+  .permiso-hoja {
+    max-width: none;
+    padding: 0;
+    gap: var(--space-md);
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 1.3rem;
+  }
+
+  .permiso-hoja__datos {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Conserva los colores de la cabecera y los títulos de sección */
+  .permiso-hoja,
+  .permiso-hoja * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

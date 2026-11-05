@@ -163,3 +163,33 @@ Componentes reutilizables (Card, Button, DataTable, Modal, etc.)
 Control de estado con hooks (useState, useEffect, useContext)
 Validación en base de datos con RLS
 Es un stack moderno y limpio, enfocado en mantener el código simple y sin sobrecarga de librerías externas.
+
+
+## CORRECCIONES 
+
+# EN EL FORMULARIO DE MANTENCIÓN, ELIMINAR EL CAMPO FECHA DE MATENCION (SOLLO DEJAR KM Y ALERTAR SOLO POR KILOMETRAJE)
+
+
+## En el formulario conductores al momento de crear un conductor el sistema debe permitir seleccionar más de una licencia para el conductor 
+
+## El sistema debe entrear un pdf con la sigueinte información, que es para solicitar perniso de salida por el fin de semana 
+los datos deben ser los sigueintes:
+- vehicul.o 
+- patente 
+- mpmbre conductor, rut 
+- información del viaje 
+- origen - destino 
+- PAra este permiso es encsario que el viaje este programado 
+
+
+## BITACORA DEL CONDUCTOR 
+- Puede iniciar el vuaje con una hora de anteicipación o retraso
+
+- en la bicatora separar el cheklist del estado de los neumaticos con el neumaticod de repuestos
+
+En el cheklist de la bicatora (confirar para cuando no se selecciones el sistema entienda que no cumple con esa opcion)
+
+
+# Cosas pendientes:
+- subir los vehiculos (planilla excel en el correo)
+- Crear la opcion para cotizar viaje

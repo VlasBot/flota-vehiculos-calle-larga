@@ -6,7 +6,7 @@ export const AuthContext = createContext(null)
 const cargarPerfil = async (userId) => {
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, nombre_completo, email, rut, role, telefono, licencia_clase, licencia_vencimiento, activo')
+    .select('id, nombre_completo, email, rut, role, telefono, licencia_clases, licencia_vencimiento, activo')
     .eq('id', userId)
     .single()
 

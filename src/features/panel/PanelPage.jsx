@@ -8,6 +8,7 @@ import { StatusChip } from '../../components/ui/StatusChip'
 import { IconAlerta } from '../../components/icons'
 import { diasHasta, formatearFecha, formatearFechaHora, formatearHora } from '../../utils/fechas'
 import { formatearKm, formatearLitros, formatearNumero, formatearPesos } from '../../utils/formato'
+import { alertaMantencion, kmRestantes } from '../shared/alertaMantencion'
 import { ESTADOS_VEHICULO } from '../shared/catalogos'
 import { traducirError } from '../shared/errorMessages'
 import { documentosPorVencer } from '../vehiculos/vehiculosApi'
@@ -46,12 +47,6 @@ function BarrasKm({ datos }) {
   )
 }
 
-const mantencionAtrasada = (mantencion) =>
-  mantencion.estado === 'programada' &&
-  ((mantencion.fecha_programada && diasHasta(mantencion.fecha_programada) < 0) ||
-    (mantencion.km_programado !== null &&
-      mantencion.vehiculo?.kilometraje_actual >= mantencion.km_programado))
-
 export function PanelPage() {
   const [resumen, setResumen] = useState(null)
 
@@ -74,14 +69,17 @@ export function PanelPage() {
   const { vehiculos, enRuta, kmPorVehiculo, mantenciones, licencias, novedades } = resumen
   const porEstado = (estado) => vehiculos.filter((vehiculo) => vehiculo.estado === estado).length
   const kmMes = kmPorVehiculo.reduce((total, dato) => total + dato.km, 0)
-  const atrasadas = mantenciones.filter(mantencionAtrasada)
+  // Atrasadas primero, luego las más cercanas a su kilometraje
+  const mantencionesConAlerta = mantenciones
+    .filter((mantencion) => alertaMantencion(mantencion))
+    .sort((a, b) => kmRestantes(a) - kmRestantes(b))
   const documentos = vehiculos
     .flatMap((vehiculo) =>
       documentosPorVencer(vehiculo).map((alerta) => ({ ...alerta, patente: vehiculo.patente })),
     )
     .sort((a, b) => a.dias - b.dias)
 
-  const totalAlertas = documentos.length + licencias.length + atrasadas.length
+  const totalAlertas = documentos.length + licencias.length + mantencionesConAlerta.length
 
   return (
     <section className="pagina">
@@ -194,14 +192,21 @@ export function PanelPage() {
                   </li>
                 )
               })}
-              {atrasadas.map((mantencion) => (
-                <li key={mantencion.id} className="panel-alertas--grave">
-                  <IconAlerta size={18} />
-                  <span>
-                    <strong>{mantencion.vehiculo?.patente}</strong> · mantención atrasada: {mantencion.descripcion}
-                  </span>
-                </li>
-              ))}
+              {mantencionesConAlerta.map((mantencion) => {
+                const atrasada = alertaMantencion(mantencion) === 'atrasada'
+                return (
+                  <li key={mantencion.id} className={atrasada ? 'panel-alertas--grave' : ''}>
+                    <IconAlerta size={18} />
+                    <span>
+                      <strong>{mantencion.vehiculo?.patente}</strong> ·{' '}
+                      {atrasada
+                        ? `mantención atrasada (${formatearKm(mantencion.km_programado)})`
+                        : `mantención en ${formatearKm(kmRestantes(mantencion))}`}
+                      : {mantencion.descripcion}
+                    </span>
+                  </li>
+                )
+              })}
             </ul>
           )}
         </Card>

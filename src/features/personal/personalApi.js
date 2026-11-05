@@ -2,7 +2,7 @@ import { supabase } from '../../lib/supabaseClient'
 import { limpiarBusqueda, rangoDePagina } from '../../utils/consultas'
 
 const COLUMNAS =
-  'id, nombre_completo, email, rut, role, telefono, licencia_clase, licencia_vencimiento, activo'
+  'id, nombre_completo, email, rut, role, telefono, licencia_clases, licencia_vencimiento, activo'
 
 export async function listarPersonas({ roles, busqueda, activo, pagina, tamano }) {
   let consulta = supabase

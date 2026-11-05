@@ -8,7 +8,7 @@ import { useFormulario } from '../../hooks/useFormulario'
 import { useToast } from '../../hooks/useToast'
 import { textoONulo } from '../../utils/formato'
 import { formatearRut, validarRut } from '../../utils/rut'
-import { OPCIONES_CLASE_LICENCIA, ROLES } from '../shared/catalogos'
+import { CLASES_LICENCIA, ROLES } from '../shared/catalogos'
 import { traducirError } from '../shared/errorMessages'
 import { actualizarPersona, crearPersona } from './personalApi'
 
@@ -19,13 +19,13 @@ const aFormulario = (persona, rolPorDefecto) => ({
   rut: persona?.rut ?? '',
   telefono: persona?.telefono ?? '',
   role: persona?.role ?? rolPorDefecto,
-  licencia_clase: persona?.licencia_clase ?? '',
+  licencia_clases: persona?.licencia_clases ?? [],
   licencia_vencimiento: persona?.licencia_vencimiento ?? '',
 })
 
 export function PersonaFormModal({ persona, esConductor, rolesPermitidos, onCerrar, onGuardado }) {
   const { mostrarExito } = useToast()
-  const { valores, cambiar } = useFormulario(aFormulario(persona, rolesPermitidos[0]))
+  const { valores, cambiar, setValores } = useFormulario(aFormulario(persona, rolesPermitidos[0]))
   const [errores, setErrores] = useState({})
   const [errorGeneral, setErrorGeneral] = useState('')
   const [guardando, setGuardando] = useState(false)
@@ -42,10 +42,21 @@ export function PersonaFormModal({ persona, esConductor, rolesPermitidos, onCerr
     if (valores.rut && !validarRut(valores.rut)) nuevos.rut = 'El RUT no es válido.'
     if (esConductor) {
       if (!valores.rut) nuevos.rut = 'El RUT es obligatorio para los conductores.'
-      if (!valores.licencia_clase) nuevos.licencia_clase = 'Selecciona la clase de licencia.'
+      if (valores.licencia_clases.length === 0) nuevos.licencia_clases = 'Selecciona al menos una clase de licencia.'
       if (!valores.licencia_vencimiento) nuevos.licencia_vencimiento = 'Indica el vencimiento de la licencia.'
     }
     return nuevos
+  }
+
+  // Se mantiene el orden del catálogo (A1, A2, …, B, C…) sin importar el orden en que se marquen
+  const alMarcarClase = (clase) => (evento) => {
+    const marcada = evento.target.checked
+    setValores((actuales) => ({
+      ...actuales,
+      licencia_clases: CLASES_LICENCIA.filter((item) =>
+        item === clase ? marcada : actuales.licencia_clases.includes(item),
+      ),
+    }))
   }
 
   const alGuardar = async (evento) => {
@@ -61,7 +72,7 @@ export function PersonaFormModal({ persona, esConductor, rolesPermitidos, onCerr
       rut: valores.rut ? formatearRut(valores.rut) : null,
       telefono: textoONulo(valores.telefono),
       role: esConductor ? 'conductor' : valores.role,
-      licencia_clase: esConductor ? valores.licencia_clase : null,
+      licencia_clases: esConductor ? valores.licencia_clases : null,
       licencia_vencimiento: esConductor ? valores.licencia_vencimiento : null,
     }
 
@@ -157,15 +168,23 @@ export function PersonaFormModal({ persona, esConductor, rolesPermitidos, onCerr
         </div>
 
         {esConductor ? (
-          <div className="formulario__grid">
-            <SelectField
-              label="Clase de licencia *"
-              value={valores.licencia_clase}
-              onChange={cambiar('licencia_clase')}
-              opciones={OPCIONES_CLASE_LICENCIA}
-              placeholder="Selecciona la clase"
-              error={errores.licencia_clase}
-            />
+          <>
+            <fieldset className="formulario__seccion">
+              <legend>Clases de licencia *</legend>
+              <div className="casillas-licencia">
+                {CLASES_LICENCIA.map((clase) => (
+                  <label key={clase} className="casilla">
+                    <input
+                      type="checkbox"
+                      checked={valores.licencia_clases.includes(clase)}
+                      onChange={alMarcarClase(clase)}
+                    />
+                    <span>Clase {clase}</span>
+                  </label>
+                ))}
+              </div>
+              {errores.licencia_clases && <span className="campo__error">{errores.licencia_clases}</span>}
+            </fieldset>
             <InputField
               label="Vencimiento de licencia *"
               type="date"
@@ -173,7 +192,7 @@ export function PersonaFormModal({ persona, esConductor, rolesPermitidos, onCerr
               onChange={cambiar('licencia_vencimiento')}
               error={errores.licencia_vencimiento}
             />
-          </div>
+          </>
         ) : (
           <SelectField
             label="Perfil"

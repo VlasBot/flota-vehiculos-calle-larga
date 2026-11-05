@@ -157,3 +157,13 @@
   border-bottom: none;
   padding-bottom: 0;
 }
+
+.mi-turno__aviso-viaje {
+  font-size: var(--fs-label-md);
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+}
+
+.mi-turno__aviso-viaje--vencido {
+  color: var(--color-error);
+}

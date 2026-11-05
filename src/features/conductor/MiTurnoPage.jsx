@@ -9,7 +9,12 @@ import { diasHasta, formatearFecha, formatearFechaHora, formatearHora } from '..
 import { formatearKm, formatearLitros } from '../../utils/formato'
 import { listarCargasDeBitacora } from '../shared/bitacorasCompartidasApi'
 import { CargaCombustibleModal } from '../shared/CargaCombustibleModal'
-import { NIVELES_COMBUSTIBLE, etiqueta } from '../shared/catalogos'
+import {
+  MINUTOS_ANTICIPACION_VIAJE,
+  MINUTOS_RETRASO_VIAJE,
+  NIVELES_COMBUSTIBLE,
+  etiqueta,
+} from '../shared/catalogos'
 import { traducirError } from '../shared/errorMessages'
 import {
   listarMisProximosTurnos,
@@ -35,11 +40,46 @@ function AvisoLicencia({ vencimiento }) {
   )
 }
 
+const MINUTO = 60000
+
+// Un viaje programado se puede iniciar desde 1 hora antes hasta 2 horas después de su salida
+function ventanaDeInicio(viaje, ahora) {
+  const salida = new Date(viaje.salida_programada).getTime()
+  const desde = salida - MINUTOS_ANTICIPACION_VIAJE * MINUTO
+  const hasta = salida + MINUTOS_RETRASO_VIAJE * MINUTO
+  if (ahora < desde) return { estado: 'pronto', desde }
+  if (ahora > hasta) return { estado: 'vencido' }
+  return { estado: 'abierta' }
+}
+
+function AccionViaje({ viaje, ahora, onIniciar }) {
+  const ventana = ventanaDeInicio(viaje, ahora)
+
+  if (ventana.estado === 'pronto') {
+    return <span className="mi-turno__aviso-viaje">Podrás iniciarlo desde las {formatearHora(ventana.desde)}</span>
+  }
+
+  if (ventana.estado === 'vencido') {
+    return (
+      <span className="mi-turno__aviso-viaje mi-turno__aviso-viaje--vencido">
+        Venció el plazo para iniciarlo. Contacta al encargado de flota.
+      </span>
+    )
+  }
+
+  return (
+    <Button variante="secundario" onClick={onIniciar}>
+      Iniciar este viaje
+    </Button>
+  )
+}
+
 export function MiTurnoPage() {
   const { profile } = useAuth()
   const { mostrarError } = useToast()
   const [datos, setDatos] = useState(null)
   const [modal, setModal] = useState(null) // { tipo: 'iniciar' | 'finalizar' | 'carga', viaje }
+  const [ahora, setAhora] = useState(() => Date.now())
   const [fechaHoy] = useState(() => new Intl.DateTimeFormat('es-CL', { dateStyle: 'full' }).format(new Date()))
 
   const cargar = useCallback(async () => {
@@ -69,6 +109,12 @@ export function MiTurnoPage() {
   useEffect(() => {
     cargar()
   }, [cargar])
+
+  // Refresca cada 30 s para habilitar o cerrar la ventana de inicio de los viajes
+  useEffect(() => {
+    const intervalo = setInterval(() => setAhora(Date.now()), 30000)
+    return () => clearInterval(intervalo)
+  }, [])
 
   const cerrarYRecargar = () => {
     setModal(null)
@@ -167,9 +213,11 @@ export function MiTurnoPage() {
                     <span className="texto-secundario">{viaje.motivo}</span>
                   </div>
                   {!bitacora && (
-                    <Button variante="secundario" onClick={() => setModal({ tipo: 'iniciar', viaje })}>
-                      Iniciar este viaje
-                    </Button>
+                    <AccionViaje
+                      viaje={viaje}
+                      ahora={ahora}
+                      onIniciar={() => setModal({ tipo: 'iniciar', viaje })}
+                    />
                   )}
                 </li>
               ))}

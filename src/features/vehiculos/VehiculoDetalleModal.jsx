@@ -130,7 +130,9 @@ export function VehiculoDetalleModal({ vehiculo, onCerrar }) {
                       <span>
                         {etiqueta(TIPOS_MANTENCION, mantencion.tipo)} · {mantencion.descripcion}
                         <span className="texto-secundario">
-                          {formatearFecha(mantencion.fecha_realizada ?? mantencion.fecha_programada)}
+                          {mantencion.fecha_realizada
+                            ? formatearFecha(mantencion.fecha_realizada)
+                            : `A los ${formatearKm(mantencion.km_programado)}`}
                         </span>
                       </span>
                       <EstadoChip catalogo={ESTADOS_MANTENCION} valor={mantencion.estado} />

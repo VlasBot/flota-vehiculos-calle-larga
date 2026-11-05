@@ -66,6 +66,8 @@ Deno.serve(async (req) => {
   const password = cuerpo.password ?? ''
   const nombreCompleto = (cuerpo.nombre_completo ?? '').trim()
   const role = cuerpo.role ?? ''
+  // Es el único campo que llega como arreglo: ["A2", "B", …]
+  const licenciaClases = (cuerpo as Record<string, unknown>).licencia_clases
 
   if (!email || !nombreCompleto) {
     return responder({ error: 'El nombre y el correo son obligatorios.' }, 400)
@@ -102,7 +104,7 @@ Deno.serve(async (req) => {
       rut: cuerpo.rut ?? null,
       telefono: cuerpo.telefono ?? null,
       role,
-      licencia_clase: role === 'conductor' ? cuerpo.licencia_clase ?? null : null,
+      licencia_clases: role === 'conductor' && Array.isArray(licenciaClases) ? licenciaClases : null,
       licencia_vencimiento: role === 'conductor' ? cuerpo.licencia_vencimiento ?? null : null,
     },
   })

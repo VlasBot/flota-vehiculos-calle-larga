@@ -37,7 +37,7 @@ export async function obtenerResumenPanel() {
       supabase.from('cargas_combustible').select('litros, monto').gte('fecha', mes),
       supabase
         .from('mantenciones')
-        .select('id, estado, fecha_programada, km_programado, descripcion, vehiculo:vehiculos(patente, kilometraje_actual)')
+        .select('id, estado, km_programado, descripcion, vehiculo:vehiculos(patente, kilometraje_actual)')
         .in('estado', ['programada', 'en_proceso']),
       supabase
         .from('profiles')

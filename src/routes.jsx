@@ -19,6 +19,11 @@ const TurnosPage = cargarPagina(() => import('./features/turnos/TurnosPage'), 'T
 const BitacorasPage = cargarPagina(() => import('./features/bitacoras/BitacorasPage'), 'BitacorasPage')
 const CombustiblePage = cargarPagina(() => import('./features/combustible/CombustiblePage'), 'CombustiblePage')
 const MantencionesPage = cargarPagina(() => import('./features/mantenciones/MantencionesPage'), 'MantencionesPage')
+const PermisosPage = cargarPagina(() => import('./features/permisos/PermisosPage'), 'PermisosPage')
+const PermisoDocumentoPage = cargarPagina(
+  () => import('./features/permisos/PermisoDocumentoPage'),
+  'PermisoDocumentoPage',
+)
 const PersonalPage = cargarPagina(() => import('./features/personal/PersonalPage'), 'PersonalPage')
 const MiTurnoPage = cargarPagina(() => import('./features/conductor/MiTurnoPage'), 'MiTurnoPage')
 const MiHistorialPage = cargarPagina(() => import('./features/conductor/MiHistorialPage'), 'MiHistorialPage')
@@ -41,6 +46,11 @@ export function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
 
       <Route element={<ProtectedRoute />}>
+        {/* El documento del permiso va sin menú lateral para poder imprimirlo limpio */}
+        <Route element={<RoleRoute allowedRoles={GESTION} />}>
+          <Route path="/permisos/:id/imprimir" element={<PermisoDocumentoPage />} />
+        </Route>
+
         <Route element={<AppShell />}>
           <Route index element={<InicioSegunRol />} />
 
@@ -51,6 +61,7 @@ export function AppRoutes() {
           <Route element={<RoleRoute allowedRoles={GESTION} />}>
             <Route path="/vehiculos" element={<VehiculosPage />} />
             <Route path="/viajes" element={<ViajesPage />} />
+            <Route path="/permisos" element={<PermisosPage />} />
             <Route path="/turnos" element={<TurnosPage />} />
             <Route path="/bitacoras" element={<BitacorasPage />} />
             <Route path="/combustible" element={<CombustiblePage />} />

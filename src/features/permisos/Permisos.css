@@ -1,0 +1,66 @@
+/* Lista de viajes a elegir en "Nuevo permiso" */
+.permiso-viajes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.permiso-viaje {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border: 0.1rem solid var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+}
+
+.permiso-viaje:has(input:checked) {
+  border-color: var(--color-secondary-container);
+  background-color: var(--color-secondary-fixed);
+}
+
+.permiso-viaje input {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  margin-top: 0.2rem;
+  accent-color: var(--color-secondary-container);
+}
+
+.permiso-viaje__datos {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.permiso-viaje--bloqueado {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Lista de feriados */
+.feriados-lista {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--space-md);
+}
+
+.feriados-lista li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  border-bottom: 0.1rem solid var(--color-outline-variant);
+}
+
+.feriados-lista li:last-child {
+  border-bottom: none;
+}
+
+.feriados-lista li > span {
+  display: flex;
+  flex-direction: column;
+}

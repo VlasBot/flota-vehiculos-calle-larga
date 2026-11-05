@@ -12,7 +12,7 @@ export async function listarVehiculosParaSelector() {
 export async function listarConductoresParaSelector() {
   return supabase
     .from('profiles')
-    .select('id, nombre_completo, licencia_clase, licencia_vencimiento')
+    .select('id, nombre_completo, licencia_clases, licencia_vencimiento')
     .eq('role', 'conductor')
     .eq('activo', true)
     .order('nombre_completo')

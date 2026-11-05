@@ -3,6 +3,7 @@ import {
   IconCalendario,
   IconCombustible,
   IconConductor,
+  IconDocumento,
   IconHerramienta,
   IconHistorial,
   IconPanel,
@@ -13,6 +14,7 @@ import {
 
 const ENLACES_GESTION = [
   { to: '/viajes', label: 'Viajes', Icono: IconRuta },
+  { to: '/permisos', label: 'Permisos', Icono: IconDocumento },
   { to: '/turnos', label: 'Turnos', Icono: IconCalendario },
   { to: '/vehiculos', label: 'Vehículos', Icono: IconVehiculo },
   { to: '/mantenciones', label: 'Mantenciones', Icono: IconHerramienta },

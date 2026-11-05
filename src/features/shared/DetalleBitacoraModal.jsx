@@ -91,8 +91,9 @@ export function DetalleBitacoraModal({ bitacora, onCerrar }) {
               </div>
             </dl>
             <ul className="detalle-bitacora__checklist">
-              {ITEMS_CHECKLIST.map((item) => {
-                const ok = Boolean(bitacora.checklist_inicio?.[item.clave])
+              {/* Solo los puntos que existían cuando se registró la bitácora */}
+              {ITEMS_CHECKLIST.filter((item) => item.clave in (bitacora.checklist_inicio ?? {})).map((item) => {
+                const ok = bitacora.checklist_inicio[item.clave] === true
                 return (
                   <li key={item.clave} className={ok ? 'ok' : 'pendiente'}>
                     {ok ? <IconCheck size={16} /> : <IconClose size={16} />}

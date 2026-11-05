@@ -10,9 +10,11 @@ import { formatearKm, textoONulo } from '../../utils/formato'
 import { ITEMS_CHECKLIST } from '../shared/catalogos'
 import { traducirError } from '../shared/errorMessages'
 import { iniciarViaje, listarVehiculosDisponibles } from './conductorApi'
+import { ChecklistRevision } from './ChecklistRevision'
 import { NivelCombustibleSelector } from './NivelCombustibleSelector'
 
-const checklistVacio = () => Object.fromEntries(ITEMS_CHECKLIST.map((item) => [item.clave, false]))
+// null = sin marcar; al registrar se guarda como false ("Mal")
+const checklistVacio = () => Object.fromEntries(ITEMS_CHECKLIST.map((item) => [item.clave, null]))
 
 // `viaje` es opcional: si viene, el vehículo y el destino quedan fijados por la planificación
 export function IniciarViajeModal({ viaje, onCerrar, onIniciado }) {
@@ -34,7 +36,6 @@ export function IniciarViajeModal({ viaje, onCerrar, onIniciado }) {
   }, [viaje])
 
   const vehiculo = viaje ? viaje.vehiculo : vehiculos?.find((item) => item.id === vehiculoId)
-  const itemsPendientes = ITEMS_CHECKLIST.filter((item) => !checklist[item.clave])
 
   const alElegirVehiculo = (evento) => {
     const id = evento.target.value
@@ -43,8 +44,8 @@ export function IniciarViajeModal({ viaje, onCerrar, onIniciado }) {
     if (elegido) setKmInicio(elegido.kilometraje_actual)
   }
 
-  const alMarcar = (clave) => (evento) => {
-    setChecklist((actual) => ({ ...actual, [clave]: evento.target.checked }))
+  const alMarcar = (clave, bien) => {
+    setChecklist((actual) => ({ ...actual, [clave]: bien }))
   }
 
   const alEnviar = async (evento) => {
@@ -59,10 +60,6 @@ export function IniciarViajeModal({ viaje, onCerrar, onIniciado }) {
       nuevos.kmInicio = `No puede ser menor al último registrado (${formatearKm(vehiculo.kilometraje_actual)}).`
     }
     if (!combustible) nuevos.combustible = 'Indica el nivel de combustible.'
-    // Si algo de la revisión no está bien, el conductor debe explicarlo
-    if (itemsPendientes.length > 0 && !observaciones.trim()) {
-      nuevos.observaciones = 'Hay puntos de la revisión sin marcar: describe el problema.'
-    }
     setErrores(nuevos)
     if (Object.keys(nuevos).length > 0) return
 
@@ -73,7 +70,7 @@ export function IniciarViajeModal({ viaje, onCerrar, onIniciado }) {
       destino: destino.trim(),
       kmInicio: Number(kmInicio),
       combustible,
-      checklist,
+      checklist: Object.fromEntries(Object.entries(checklist).map(([clave, bien]) => [clave, bien === true])),
       observaciones: textoONulo(observaciones),
     })
     setEnviando(false)
@@ -161,23 +158,14 @@ export function IniciarViajeModal({ viaje, onCerrar, onIniciado }) {
           error={errores.combustible}
         />
 
-        <fieldset className="formulario__seccion">
-          <legend>Revisión del vehículo antes de salir</legend>
-          {ITEMS_CHECKLIST.map((item) => (
-            <label key={item.clave} className="casilla">
-              <input type="checkbox" checked={checklist[item.clave]} onChange={alMarcar(item.clave)} />
-              <span>{item.label}</span>
-            </label>
-          ))}
-        </fieldset>
+        <ChecklistRevision valores={checklist} onCambiar={alMarcar} />
 
         <InputField
           as="textarea"
-          label={itemsPendientes.length > 0 ? 'Observaciones *' : 'Observaciones'}
+          label="Observaciones"
           value={observaciones}
           onChange={(e) => setObservaciones(e.target.value)}
-          error={errores.observaciones}
-          placeholder="Daños visibles, ruidos, luces de advertencia, etc."
+          placeholder="Si marcaste algo como Mal, describe el problema: daños visibles, ruidos, luces de advertencia, etc."
         />
       </form>
     </Modal>

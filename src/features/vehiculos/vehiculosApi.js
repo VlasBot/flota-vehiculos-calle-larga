@@ -50,7 +50,7 @@ export async function obtenerHistorialVehiculo(vehiculoId) {
       .limit(5),
     supabase
       .from('mantenciones')
-      .select('id, tipo, estado, descripcion, fecha_programada, fecha_realizada, km_programado')
+      .select('id, tipo, estado, descripcion, fecha_realizada, km_programado')
       .eq('vehiculo_id', vehiculoId)
       .order('creado_en', { ascending: false })
       .limit(5),

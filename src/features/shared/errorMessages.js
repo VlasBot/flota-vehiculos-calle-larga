@@ -12,7 +12,8 @@ const MENSAJES_RESTRICCION = {
   profiles_rut_key: 'Ya existe una persona registrada con ese RUT.',
   bitacoras_una_abierta_por_conductor: 'Ya tienes un viaje en curso. Finalízalo antes de iniciar otro.',
   bitacoras_una_abierta_por_vehiculo: 'El vehículo ya está siendo usado en otro viaje.',
-  mantenciones_con_meta: 'Indica una fecha o un kilometraje programado para la mantención.',
+  permisos_viaje_id_key: 'Este viaje ya tiene un permiso emitido.',
+  feriados_pkey: 'Esa fecha ya está registrada como feriado.',
   mantenciones_realizada_con_fecha: 'Indica la fecha en que se realizó la mantención.',
 }
 

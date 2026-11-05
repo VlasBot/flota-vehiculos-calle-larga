@@ -16,6 +16,14 @@ const formatoFechaHora = new Intl.DateTimeFormat('es-CL', {
   minute: '2-digit',
 })
 
+const formatoDiaLargo = new Intl.DateTimeFormat('es-CL', {
+  timeZone: ZONA,
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+})
+
 const formatoHora = new Intl.DateTimeFormat('es-CL', {
   timeZone: ZONA,
   hour: '2-digit',
@@ -32,6 +40,11 @@ export function formatearFecha(valor) {
 
 export function formatearFechaHora(valor) {
   return valor ? formatoFechaHora.format(new Date(valor)) : '—'
+}
+
+// "sábado, 24 de octubre de 2026"
+export function formatearDiaLargo(valor) {
+  return valor ? formatoDiaLargo.format(aFecha(valor)) : '—'
 }
 
 export function formatearHora(valor) {

@@ -11,7 +11,7 @@ import { StatusChip } from '../../components/ui/StatusChip'
 import { IconEditar, IconMas } from '../../components/icons'
 import { useListaPaginada } from '../../hooks/useListaPaginada'
 import { useValorDiferido } from '../../hooks/useValorDiferido'
-import { diasHasta, formatearFecha } from '../../utils/fechas'
+import { formatearFecha } from '../../utils/fechas'
 import { formatearKm, formatearPesos } from '../../utils/formato'
 import {
   ESTADOS_MANTENCION,
@@ -19,6 +19,7 @@ import {
   TIPOS_MANTENCION,
   etiqueta,
 } from '../shared/catalogos'
+import { alertaMantencion, kmRestantes } from '../shared/alertaMantencion'
 import { opcionVehiculo } from '../shared/catalogosApi'
 import { EstadoChip } from '../shared/EstadoChip'
 import { useSelectores } from '../shared/useSelectores'
@@ -33,16 +34,6 @@ const COLUMNAS = [
   { key: 'costo', titulo: 'Costo', alinearDerecha: true },
   { key: 'acciones', titulo: 'Acciones', alinearDerecha: true },
 ]
-
-// Atrasada si ya pasó la fecha o el vehículo ya superó el kilometraje programado
-const estaAtrasada = (mantencion) => {
-  if (mantencion.estado !== 'programada') return false
-  const porFecha = mantencion.fecha_programada && diasHasta(mantencion.fecha_programada) < 0
-  const porKm =
-    mantencion.km_programado !== null &&
-    mantencion.vehiculo?.kilometraje_actual >= mantencion.km_programado
-  return Boolean(porFecha || porKm)
-}
 
 export function MantencionesPage() {
   const { vehiculos } = useSelectores()
@@ -63,7 +54,7 @@ export function MantencionesPage() {
     <section className="pagina">
       <PageHeader
         titulo="Mantenciones"
-        descripcion="Mantenciones preventivas y correctivas de la flota, por fecha o por kilometraje."
+        descripcion="Mantenciones preventivas y correctivas de la flota, programadas por kilometraje."
       >
         <Button onClick={() => setModal({ mantencion: null })}>
           <IconMas size={18} />
@@ -126,13 +117,13 @@ export function MantencionesPage() {
                   </span>
                 </td>
                 <td data-label="Programada">
-                  {mantencion.fecha_programada && <span>{formatearFecha(mantencion.fecha_programada)}</span>}
-                  {mantencion.km_programado !== null && (
-                    <span className="texto-secundario">
-                      a los {formatearKm(mantencion.km_programado)} (actual{' '}
-                      {formatearKm(mantencion.vehiculo?.kilometraje_actual)})
-                    </span>
-                  )}
+                  <span>A los {formatearKm(mantencion.km_programado)}</span>
+                  <span className="texto-secundario">
+                    Actual {formatearKm(mantencion.vehiculo?.kilometraje_actual)}
+                    {mantencion.estado === 'programada' &&
+                      kmRestantes(mantencion) > 0 &&
+                      ` · faltan ${formatearKm(kmRestantes(mantencion))}`}
+                  </span>
                   {mantencion.estado === 'realizada' && (
                     <span className="texto-secundario">
                       Realizada el {formatearFecha(mantencion.fecha_realizada)}
@@ -140,8 +131,10 @@ export function MantencionesPage() {
                   )}
                 </td>
                 <td data-label="Estado">
-                  {estaAtrasada(mantencion) ? (
+                  {alertaMantencion(mantencion) === 'atrasada' ? (
                     <StatusChip tono="peligro">Atrasada</StatusChip>
+                  ) : alertaMantencion(mantencion) === 'proxima' ? (
+                    <StatusChip tono="alerta">Próxima</StatusChip>
                   ) : (
                     <EstadoChip catalogo={ESTADOS_MANTENCION} valor={mantencion.estado} />
                   )}
