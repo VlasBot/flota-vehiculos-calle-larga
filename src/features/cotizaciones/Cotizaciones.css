@@ -1,0 +1,83 @@
+/* Resumen del costo en el formulario de cotización */
+.cotizacion-resumen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border: 0.1rem solid var(--color-outline-variant);
+  border-left: 0.4rem solid var(--color-secondary-container);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-container-low);
+}
+
+.cotizacion-resumen__detalle {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm) var(--space-md);
+}
+
+@media (min-width: 700px) {
+  .cotizacion-resumen__detalle {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.cotizacion-resumen__detalle dt {
+  font-size: var(--fs-label-md);
+  color: var(--color-on-surface-variant);
+}
+
+.cotizacion-resumen__detalle dd {
+  font-weight: 700;
+}
+
+.cotizacion-resumen__total {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 0.1rem solid var(--color-outline-variant);
+}
+
+.cotizacion-resumen__total strong {
+  font-size: var(--fs-headline-md);
+  color: var(--color-secondary);
+}
+
+/* Tabla de costos del documento PDF */
+.cotizacion-costos {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cotizacion-costos th,
+.cotizacion-costos td {
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: 0.1rem solid var(--color-outline-variant);
+  text-align: left;
+}
+
+.cotizacion-costos th {
+  font-weight: 400;
+}
+
+.cotizacion-costos td {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.cotizacion-costos tfoot th,
+.cotizacion-costos tfoot td {
+  border-bottom: none;
+  border-top: 0.2rem solid var(--color-primary-container);
+  font-size: var(--fs-body-lg);
+  font-weight: 700;
+  color: var(--color-primary-container);
+}
+
+.cotizacion-nota {
+  font-size: 1.2rem;
+  color: var(--color-on-surface-variant);
+}

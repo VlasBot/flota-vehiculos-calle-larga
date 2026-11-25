@@ -9,6 +9,8 @@ const MENSAJES_RESTRICCION = {
   viajes_rango_valido: 'El regreso debe ser posterior a la salida.',
   turnos_rango_valido: 'El término del turno debe ser posterior al inicio.',
   vehiculos_patente_key: 'Ya existe un vehículo registrado con esa patente.',
+  vehiculos_numero_motor_key: 'Ya existe un vehículo registrado con ese número de motor.',
+  vehiculos_numero_chasis_key: 'Ya existe un vehículo registrado con ese número de chasis.',
   profiles_rut_key: 'Ya existe una persona registrada con ese RUT.',
   bitacoras_una_abierta_por_conductor: 'Ya tienes un viaje en curso. Finalízalo antes de iniciar otro.',
   bitacoras_una_abierta_por_vehiculo: 'El vehículo ya está siendo usado en otro viaje.',

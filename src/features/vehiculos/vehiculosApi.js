@@ -3,7 +3,7 @@ import { limpiarBusqueda, rangoDePagina } from '../../utils/consultas'
 import { diasHasta } from '../../utils/fechas'
 
 const COLUMNAS = `
-  id, patente, numero_interno, tipo, marca, modelo, anio, color, tipo_combustible,
+  id, patente, numero_interno, numero_motor, numero_chasis, rendimiento_km_litro, tipo, marca, modelo, anio, color, tipo_combustible,
   capacidad_pasajeros, unidad_asignada, kilometraje_actual, estado,
   vencimiento_revision_tecnica, vencimiento_permiso_circulacion, vencimiento_soap, observaciones
 `

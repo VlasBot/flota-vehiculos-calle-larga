@@ -24,6 +24,11 @@ const PermisoDocumentoPage = cargarPagina(
   () => import('./features/permisos/PermisoDocumentoPage'),
   'PermisoDocumentoPage',
 )
+const CotizacionesPage = cargarPagina(() => import('./features/cotizaciones/CotizacionesPage'), 'CotizacionesPage')
+const CotizacionDocumentoPage = cargarPagina(
+  () => import('./features/cotizaciones/CotizacionDocumentoPage'),
+  'CotizacionDocumentoPage',
+)
 const PersonalPage = cargarPagina(() => import('./features/personal/PersonalPage'), 'PersonalPage')
 const MiTurnoPage = cargarPagina(() => import('./features/conductor/MiTurnoPage'), 'MiTurnoPage')
 const MiHistorialPage = cargarPagina(() => import('./features/conductor/MiHistorialPage'), 'MiHistorialPage')
@@ -49,6 +54,7 @@ export function AppRoutes() {
         {/* El documento del permiso va sin menú lateral para poder imprimirlo limpio */}
         <Route element={<RoleRoute allowedRoles={GESTION} />}>
           <Route path="/permisos/:id/imprimir" element={<PermisoDocumentoPage />} />
+          <Route path="/cotizaciones/:id/imprimir" element={<CotizacionDocumentoPage />} />
         </Route>
 
         <Route element={<AppShell />}>
@@ -68,6 +74,7 @@ export function AppRoutes() {
             <Route path="/mantenciones" element={<MantencionesPage />} />
             <Route path="/conductores" element={<PersonalPage key="conductores" tipo="conductores" />} />
             <Route path="/usuarios" element={<PersonalPage key="usuarios" tipo="usuarios" />} />
+            <Route path="/cotizaciones" element={<CotizacionesPage />} />
           </Route>
 
           <Route element={<RoleRoute allowedRoles={['conductor']} />}>

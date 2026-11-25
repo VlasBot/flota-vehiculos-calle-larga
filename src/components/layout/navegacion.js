@@ -1,5 +1,6 @@
 import {
   IconBitacora,
+  IconCalculadora,
   IconCalendario,
   IconCombustible,
   IconConductor,
@@ -22,6 +23,7 @@ const ENLACES_GESTION = [
   { to: '/combustible', label: 'Combustible', Icono: IconCombustible },
   { to: '/conductores', label: 'Conductores', Icono: IconConductor },
   { to: '/usuarios', label: 'Usuarios', Icono: IconPersonas },
+  { to: '/cotizaciones', label: 'Cotizar Viaje', Icono: IconCalculadora },
 ]
 
 export const ENLACES_POR_ROL = {

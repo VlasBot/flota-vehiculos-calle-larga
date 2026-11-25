@@ -59,6 +59,14 @@ export function VehiculoDetalleModal({ vehiculo, onCerrar }) {
             <dd>{vehiculo.numero_interno ?? '—'}</dd>
           </div>
           <div>
+            <dt>N° de motor</dt>
+            <dd>{vehiculo.numero_motor ?? '—'}</dd>
+          </div>
+          <div>
+            <dt>N° de chasis</dt>
+            <dd>{vehiculo.numero_chasis ?? '—'}</dd>
+          </div>
+          <div>
             <dt>Color</dt>
             <dd>{vehiculo.color ?? '—'}</dd>
           </div>

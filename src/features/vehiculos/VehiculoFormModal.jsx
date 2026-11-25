@@ -24,6 +24,8 @@ const OPCIONES_ESTADO = ['disponible', 'en_mantencion', 'fuera_servicio'].map((v
 const aFormulario = (vehiculo) => ({
   patente: vehiculo?.patente ?? '',
   numero_interno: vehiculo?.numero_interno ?? '',
+  numero_motor: vehiculo?.numero_motor ?? '',
+  numero_chasis: vehiculo?.numero_chasis ?? '',
   tipo: vehiculo?.tipo ?? '',
   marca: vehiculo?.marca ?? '',
   modelo: vehiculo?.modelo ?? '',
@@ -31,6 +33,7 @@ const aFormulario = (vehiculo) => ({
   color: vehiculo?.color ?? '',
   tipo_combustible: vehiculo?.tipo_combustible ?? 'diesel',
   capacidad_pasajeros: vehiculo?.capacidad_pasajeros ?? '',
+  rendimiento_km_litro: vehiculo?.rendimiento_km_litro ?? '',
   unidad_asignada: vehiculo?.unidad_asignada ?? '',
   kilometraje_actual: vehiculo?.kilometraje_actual ?? 0,
   estado: vehiculo?.estado ?? 'disponible',
@@ -52,6 +55,9 @@ const validar = (valores) => {
   if (!valores.modelo.trim()) errores.modelo = 'Ingresa el modelo.'
   if (valores.anio !== '' && (valores.anio < 1950 || valores.anio > anioActual + 1)) {
     errores.anio = `El año debe estar entre 1950 y ${anioActual + 1}.`
+  }
+  if (valores.rendimiento_km_litro !== '' && !(Number(valores.rendimiento_km_litro) > 0)) {
+    errores.rendimiento_km_litro = 'El rendimiento debe ser mayor a 0.'
   }
   if (valores.kilometraje_actual === '' || Number(valores.kilometraje_actual) < 0) {
     errores.kilometraje_actual = 'Ingresa el kilometraje actual.'
@@ -83,6 +89,9 @@ export function VehiculoFormModal({ vehiculo, onCerrar, onGuardado }) {
     const datos = {
       patente: normalizarPatente(valores.patente),
       numero_interno: textoONulo(valores.numero_interno),
+      // En mayúsculas para que la validación de duplicados no dependa de cómo se escribió
+      numero_motor: textoONulo(valores.numero_motor.toUpperCase()),
+      numero_chasis: textoONulo(valores.numero_chasis.toUpperCase()),
       tipo: valores.tipo,
       marca: valores.marca.trim(),
       modelo: valores.modelo.trim(),
@@ -90,6 +99,7 @@ export function VehiculoFormModal({ vehiculo, onCerrar, onGuardado }) {
       color: textoONulo(valores.color),
       tipo_combustible: valores.tipo_combustible,
       capacidad_pasajeros: aNumeroONulo(valores.capacidad_pasajeros),
+      rendimiento_km_litro: aNumeroONulo(valores.rendimiento_km_litro),
       unidad_asignada: textoONulo(valores.unidad_asignada),
       kilometraje_actual: aNumeroONulo(valores.kilometraje_actual),
       estado: valores.estado,
@@ -180,6 +190,18 @@ export function VehiculoFormModal({ vehiculo, onCerrar, onGuardado }) {
               error={errores.anio}
             />
             <InputField label="Color" value={valores.color} onChange={cambiar('color')} />
+            <InputField
+              label="N° de motor"
+              value={valores.numero_motor}
+              onChange={cambiar('numero_motor')}
+              maxLength={30}
+            />
+            <InputField
+              label="N° de chasis"
+              value={valores.numero_chasis}
+              onChange={cambiar('numero_chasis')}
+              maxLength={30}
+            />
           </div>
         </fieldset>
 
@@ -202,6 +224,17 @@ export function VehiculoFormModal({ vehiculo, onCerrar, onGuardado }) {
               min="0"
               value={valores.capacidad_pasajeros}
               onChange={cambiar('capacidad_pasajeros')}
+            />
+            <InputField
+              label={`Rendimiento (km por ${valores.tipo_combustible === 'electrico' ? 'kWh' : 'litro'})`}
+              type="number"
+              inputMode="decimal"
+              min="0"
+              step="0.1"
+              value={valores.rendimiento_km_litro}
+              onChange={cambiar('rendimiento_km_litro')}
+              error={errores.rendimiento_km_litro}
+              ayuda="Se usa para cotizar viajes."
             />
             <InputField
               label="Unidad / departamento asignado"
